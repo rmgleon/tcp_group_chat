@@ -11,6 +11,9 @@ client = Client(ip, port, nickname)
 def handle_receive():
     while True:
         incoming_message = client.receive()
+        if incoming_message == 'FAILED_TO_CONNECT':
+            print("Server cannot be reached")
+            break
         print(incoming_message)
 
 def handle_write():
