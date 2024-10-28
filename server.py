@@ -18,7 +18,7 @@ def broadcast(message):
 
 def handle(client):
     while True:
-        try: # to send data to our clients 
+        try: # to take data from our clients 
             message = client.recv(1024)
             broadcast(message)
         except: # cut them if it fails 
@@ -27,7 +27,7 @@ def handle(client):
             client.close()
 
             nickname = nicknames[index]
-            broadcast(f"{nickname} left the chat".encode('ascii'))
+            broadcast(f"\n{nickname} left the chat".encode('ascii'))
             nicknames.remove(nickname)
             break
 
@@ -45,7 +45,7 @@ def receive():
 
         # Inform everyone of the new client
         print(f"Nickname of client is {nickname}")
-        broadcast(f"{nickname} joined".encode('ascii'))
+        broadcast(f"\n{nickname} joined".encode('ascii'))
         client.send("Connected to server succesfully".encode('ascii'))
 
         # Assign a thread to the client
