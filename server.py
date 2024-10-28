@@ -21,7 +21,8 @@ def handle(client):
     while True:
         try: # to take data from our clients 
             message = client.recv(1024)
-            broadcast(message)
+            if message != None:
+                broadcast(message)
         except: # cut them if it fails 
             index = clients.index(client)
             clients.remove(client)
@@ -46,8 +47,15 @@ def receive():
 
         # Inform everyone of the new client
         print(f"Nickname of client is {nickname}")
-        broadcast(f"\n{nickname} joined".encode('utf-8'))
-        client.send(f"Connected to {server_name} succesfully".encode('utf-8'))
+        broadcast(f"{nickname} joined".encode('utf-8'))
+
+        # Inform client of users
+        client.send(f"Connected to {server_name} succesfully.\nUsers: ".encode('utf-8'))
+        for index in range(len(nicknames)):
+            if index == len(nicknames) - 1:
+                client.send(f"{nicknames[index]}.".encode('utf-8'))    
+            else:
+                client.send(f"{nicknames[index]}, ".encode('utf-8'))
 
         # Assign a thread to the client
         thread = threading.Thread(target=handle, args=(client,))
